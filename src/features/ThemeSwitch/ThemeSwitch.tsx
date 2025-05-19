@@ -1,9 +1,9 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { SwitchProps, useSwitch } from '@heroui/switch';
 import clsx from 'clsx';
 import { useTheme } from '@heroui/use-theme';
-import { MoonFilledIcon, SunFilledIcon } from '../../Assets/Icons/icons';
+import { MoonFilledIcon, SunFilledIcon } from '../../shared/ui/Icons/icons';
 
 export interface ThemeSwitchProps {
   className?: string;
@@ -14,8 +14,6 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   className,
   classNames,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
   const { theme, setTheme } = useTheme();
 
   const {
@@ -29,13 +27,6 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     isSelected: theme === 'light',
     onChange: () => setTheme(theme === 'light' ? 'dark' : 'light'),
   });
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, [isMounted]);
-
-  // Prevent Hydration Mismatch
-  if (!isMounted) return <div className="w-6 h-6" />;
 
   return (
     <Component
@@ -71,9 +62,19 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         })}
       >
         {isSelected ? (
-          <MoonFilledIcon size={22} />
+          <MoonFilledIcon
+            size={22}
+            className={
+              theme === 'light' ? 'text-default-700' : 'text-default-200'
+            }
+          />
         ) : (
-          <SunFilledIcon size={22} />
+          <SunFilledIcon
+            size={22}
+            className={
+              theme === 'light' ? 'text-default-700' : 'text-default-200'
+            }
+          />
         )}
       </div>
     </Component>
