@@ -1,4 +1,4 @@
-import Navbar from '@/widgets/Navbar/Navbar';
+import Navbar from '@/widgets/Navbar/ui/Navbar';
 import { FC } from 'react';
 
 const MainPage: FC = () => (

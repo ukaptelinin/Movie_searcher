@@ -2,9 +2,9 @@ import { FC } from 'react';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { Form } from '@heroui/form';
-import { SearchIcon } from '../../shared/ui/Icons/icons';
+import { SearchIcon } from '@/shared/Icons/ui/icons';
 
-const SearchInput: FC = () => {
+const SearchMoviesInput: FC = () => {
   const onSearcheMivie = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -40,4 +40,4 @@ const SearchInput: FC = () => {
   );
 };
 
-export default SearchInput;
+export default SearchMoviesInput;

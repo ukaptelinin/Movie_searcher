@@ -5,10 +5,10 @@ import {
   NavbarContent,
   NavbarItem,
 } from '@heroui/navbar';
-import { Avatar } from '@heroui/avatar';
+import { FilmIcon } from '@heroicons/react/24/outline';
 import { FC } from 'react';
 import { ThemeSwitch } from '@/features/ThemeSwitch/ThemeSwitch';
-import SearchInput from '@/features/SearchInput/SearchInput';
+import SearchInput from '@/features/SearchMoviesInput/SearchMoviesInput';
 
 export const Navbar: FC = () => {
   return (
@@ -20,7 +20,7 @@ export const Navbar: FC = () => {
             color="foreground"
             href="/"
           >
-            <Avatar size="md" src="../public/img/cinema.png" />
+            <FilmIcon className="w-8 h-8 text-primary" />
             <p className="font-bold text-inherit pl-3">MOVIE SEARCHER</p>
           </Link>
         </NavbarBrand>
