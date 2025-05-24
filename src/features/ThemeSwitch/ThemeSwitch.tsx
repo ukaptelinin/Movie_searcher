@@ -69,12 +69,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
             )}
           />
         ) : (
-          <SunIcon
-            className={clsx(
-              'h-6 w-6',
-              theme === 'light' ? 'text-default-700' : 'text-default-200',
-            )}
-          />
+          <SunIcon className="h-6 w-6" />
         )}
       </div>
     </Component>

@@ -3,20 +3,24 @@ import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { Form } from '@heroui/form';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { getMovies } from '../api/getMovies';
 
 const SearchMoviesInput: FC = () => {
-  const onSearcheMivie = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
-    const inputText = formData.get('search') as string;
-    e.currentTarget.reset();
+    const title = formData.get('search') as string;
+    const moviesData = await getMovies(title);
+    if (form && typeof form.reset === 'function') {
+      form.reset();
+    }
   };
 
   return (
     <Form
       className="flex items-center gap-2 flex-grow"
-      onSubmit={onSearcheMivie}
+      onSubmit={onSearcheMovie}
     >
       <Input
         className="flex-grow"
