@@ -8,7 +8,7 @@ import {
 import { FilmIcon } from '@heroicons/react/24/outline';
 import { FC } from 'react';
 import { ThemeSwitch } from '@/features/ThemeSwitch/ThemeSwitch';
-import SearchInput from '@/features/SearchMoviesInput/SearchMoviesInput';
+import SearchInput from '@/features/SearchMoviesInput/ui/SearchMoviesInput';
 
 export const Navbar: FC = () => {
   return (
