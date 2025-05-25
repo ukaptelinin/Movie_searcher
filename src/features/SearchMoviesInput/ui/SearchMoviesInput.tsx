@@ -1,17 +1,21 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { Form } from '@heroui/form';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { getMovies } from '../api/getMovies';
+import { MoviesResponseContext } from '@/app/providers/MoviesResponseContextProvider/context';
 
 const SearchMoviesInput: FC = () => {
+  const { moviesList, addMovies } = useContext(MoviesResponseContext);
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
     const title = formData.get('search') as string;
     const moviesData = await getMovies(title);
+    addMovies(moviesData);
+    console.log(moviesList);
     if (form && typeof form.reset === 'function') {
       form.reset();
     }

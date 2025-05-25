@@ -1,9 +1,5 @@
 import { createContext, FC, ReactNode, useState } from 'react';
 
-export const MoviesResponseContext = createContext<IMoviesResponseContext>({
-  moviesList: [],
-});
-
 export interface MovieRatings {
   Source: string;
   Value: string;
@@ -39,17 +35,28 @@ export interface MoviesResponse {
 
 interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
+  addMovies: (newMovies: MoviesResponse[]) => void;
 }
+
+export const MoviesResponseContext = createContext<IMoviesResponseContext>({
+  moviesList: [],
+  addMovies: () => {},
+});
 
 const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
 
+  const addMovies = (newMovies: MoviesResponse[]): void => {
+    setMoviesList((currentMovies) => [...currentMovies, ...newMovies]);
+  };
+
   return (
     <MoviesResponseContext.Provider
       value={{
         moviesList,
+        addMovies,
       }}
     >
       {children}

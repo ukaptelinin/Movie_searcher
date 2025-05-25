@@ -4,27 +4,30 @@ import { MoviesResponse } from '@/app/providers/MoviesResponseContextProvider/co
 const BASE_URL = 'http://www.omdbapi.com/';
 const API_KEY = 'b168952b';
 
-export const getMovies = async (
-  title: string,
-): Promise<MoviesResponse | null> => {
+export const getMovies = async (title: string): Promise<MoviesResponse[]> => {
   try {
-    const response = await axios.get<MoviesResponse>(BASE_URL, {
+    const response = await axios.get<{
+      Search?: MoviesResponse[];
+      Response: string;
+    }>(BASE_URL, {
       params: {
         apikey: API_KEY,
-        t: title,
+        s: title,
+        type: 'movie',
+        page: 1,
       },
     });
 
     const movieData = response.data;
 
-    if (movieData.Response === 'True') {
-      return movieData;
+    if (movieData.Response === 'True' && movieData.Search) {
+      return movieData.Search;
     } else {
-      console.error('Ошибка: фильм не найден');
-      return null;
+      console.error('Фильмы не найдены');
+      return [];
     }
   } catch (error) {
     console.error('Error fetching data:', error);
-    return null;
+    return [];
   }
 };
