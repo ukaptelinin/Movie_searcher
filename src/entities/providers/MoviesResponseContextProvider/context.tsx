@@ -57,11 +57,11 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
       const currentLoadingMovies = await fetchMovies(
         movieTitle,
         moviesPageNumber,
-      ); // Добавлен await
+      );
       return currentLoadingMovies;
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Не опознанная ошибка');
-      return []; // Возвращаем пустой массив в случае ошибки
+      return [];
     } finally {
       toggleLoadingMovies();
     }

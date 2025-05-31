@@ -27,8 +27,5 @@ export const fetchMovies = async (
   if (movieData.Response === 'True' && movieData.Search) {
     return movieData.Search;
   }
-
-  // Если фильмы не найдены, просто возвращаем пустой массив
-  // Ошибка будет обработана в getMovies
   return [];
 };
