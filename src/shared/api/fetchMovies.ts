@@ -1,15 +1,14 @@
 import axios from 'axios';
-import { MoviesResponse } from '../models/types';
+import { MoviesResponse } from './types';
 
 const BASE_URL = 'http://www.omdbapi.com/';
-const API_KEY = 'b168952b';
-const PAGE_SIZE = 5;
-
+const API_KEY = import.meta.env.VITE_API_KEY;
 export const fetchMovies = async (
   title: string,
   pageNumber: number,
 ): Promise<MoviesResponse[]> => {
   const response = await axios.get<{
+    Error: string;
     Search?: MoviesResponse[];
     Response: string;
   }>(BASE_URL, {
@@ -18,14 +17,12 @@ export const fetchMovies = async (
       s: title,
       type: 'movie',
       page: pageNumber,
-      size: PAGE_SIZE,
     },
   });
-
   const movieData = response.data;
 
   if (movieData.Response === 'True' && movieData.Search) {
     return movieData.Search;
   }
-  return [];
+  throw new Error(movieData.Error || 'Фильмы не найдены');
 };

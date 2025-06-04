@@ -1,28 +1,21 @@
 import { fetchMovies } from '@/shared/api/fetchMovies';
-import { MoviesResponse } from '@/shared/models/types';
-import { createContext, FC, ReactNode, useState } from 'react';
+import { MoviesResponse } from '@/shared/api/types';
+import { createContext, FC, ReactNode, useState, useTransition } from 'react';
 
 interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
   fetchError: string | null;
-  isLoadingMovies: boolean;
   moviesPageNumber: number;
-  addMovies: (newMovies: MoviesResponse[]) => void;
-  setError: (error: string | null) => void;
-  toggleLoadingMovies: () => void;
-  setLoadingPageNumber: (newPageNumber: number) => void;
+  isPending: boolean;
+
   getMovies: (movieTitle: string) => Promise<MoviesResponse[]>;
 }
 
 export const MoviesResponseContext = createContext<IMoviesResponseContext>({
   moviesList: [],
   fetchError: null,
-  isLoadingMovies: false,
   moviesPageNumber: 1,
-  addMovies: () => {},
-  setError: () => {},
-  toggleLoadingMovies: () => {},
-  setLoadingPageNumber: () => {},
+  isPending: false,
   getMovies: () => Promise.resolve([]),
 });
 
@@ -31,19 +24,11 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
 }) => {
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
-  const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
-
-  const addMovies = (newMovies: MoviesResponse[]): void => {
-    setMoviesList((currentMovies) => [...currentMovies, ...newMovies]);
-  };
+  const [isPending, startTransition] = useTransition();
 
   const setError = (error: string | null): void => {
     setFetchError(error);
-  };
-
-  const toggleLoadingMovies = (): void => {
-    setIsLoadingMovies(!isLoadingMovies);
   };
 
   const setLoadingPageNumber = (newPageNumber: number): void => {
@@ -52,18 +37,25 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
 
   const getMovies = async (movieTitle: string): Promise<MoviesResponse[]> => {
     try {
-      toggleLoadingMovies();
-      setError(null);
+      startTransition(() => {
+        setError(null);
+      });
+
       const currentLoadingMovies = await fetchMovies(
         movieTitle,
         moviesPageNumber,
       );
+      console.log(currentLoadingMovies);
+      setMoviesList((prevMovies) => [...prevMovies, ...currentLoadingMovies]);
+      console.log(moviesList);
       return currentLoadingMovies;
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Не опознанная ошибка');
+      startTransition(() => {
+        setError(
+          error instanceof Error ? error.message : 'Неопознанная ошибка',
+        );
+      });
       return [];
-    } finally {
-      toggleLoadingMovies();
     }
   };
 
@@ -72,12 +64,8 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
       value={{
         moviesList,
         fetchError,
-        isLoadingMovies,
         moviesPageNumber,
-        addMovies,
-        setError,
-        toggleLoadingMovies,
-        setLoadingPageNumber,
+        isPending,
         getMovies,
       }}
     >
