@@ -4,7 +4,7 @@ import { createContext, FC, ReactNode, useState, useTransition } from 'react';
 
 interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
-  fetchError: string | null;
+  error: string | null;
   moviesPageNumber: number;
   isPending: boolean;
 
@@ -13,7 +13,7 @@ interface IMoviesResponseContext {
 
 export const MoviesResponseContext = createContext<IMoviesResponseContext>({
   moviesList: [],
-  fetchError: null,
+  error: null,
   moviesPageNumber: 1,
   isPending: false,
   getMovies: () => Promise.resolve([]),
@@ -23,12 +23,12 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
-  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
   const [isPending, startTransition] = useTransition();
 
-  const setError = (error: string | null): void => {
-    setFetchError(error);
+  const setCurrentError = (error: string | null): void => {
+    setError(error);
   };
 
   const setLoadingPageNumber = (newPageNumber: number): void => {
@@ -38,20 +38,21 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
   const getMovies = async (movieTitle: string): Promise<MoviesResponse[]> => {
     try {
       startTransition(() => {
-        setError(null);
+        setCurrentError(null);
+        setMoviesList([]);
       });
 
       const currentLoadingMovies = await fetchMovies(
         movieTitle,
         moviesPageNumber,
       );
-      console.log(currentLoadingMovies);
-      setMoviesList((prevMovies) => [...prevMovies, ...currentLoadingMovies]);
-      console.log(moviesList);
+      startTransition(() => {
+        setMoviesList(moviesList.concat(currentLoadingMovies));
+      });
       return currentLoadingMovies;
     } catch (error) {
       startTransition(() => {
-        setError(
+        setCurrentError(
           error instanceof Error ? error.message : 'Неопознанная ошибка',
         );
       });
@@ -63,7 +64,7 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
     <MoviesResponseContext.Provider
       value={{
         moviesList,
-        fetchError,
+        error,
         moviesPageNumber,
         isPending,
         getMovies,

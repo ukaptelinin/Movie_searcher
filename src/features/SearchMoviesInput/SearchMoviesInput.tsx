@@ -9,11 +9,9 @@ export const SearchMoviesInput: FC = () => {
   const { getMovies } = useContext(MoviesResponseContext);
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
     const title = formData.get('search') as string;
     await getMovies(title);
-    form?.reset();
   };
 
   return (
