@@ -1,13 +1,11 @@
 import { fetchMovies } from '@/shared/api/fetchMovies';
 import { MoviesResponse } from '@/shared/api/types';
 import { createContext, FC, ReactNode, useState, useTransition } from 'react';
-
-interface IMoviesResponseContext {
+export interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
   error: string | null;
   moviesPageNumber: number;
   isPending: boolean;
-
   getMovies: (movieTitle: string) => Promise<MoviesResponse[]>;
 }
 
@@ -19,7 +17,7 @@ export const MoviesListContext = createContext<IMoviesResponseContext>({
   getMovies: () => Promise.resolve([]),
 });
 
-const MoviesListContextProvider: FC<{ children: ReactNode }> = ({
+export const MoviesContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
@@ -27,20 +25,12 @@ const MoviesListContextProvider: FC<{ children: ReactNode }> = ({
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
   const [isPending, startTransition] = useTransition();
 
-  const setCurrentError = (error: string | null): void => {
-    setError(error);
-  };
-
-  const setLoadingPageNumber = (newPageNumber: number): void => {
-    setMoviesPageNumber(newPageNumber);
-  };
-
   const getMovies = async (movieTitle: string): Promise<MoviesResponse[]> => {
     let result: MoviesResponse[] = [];
 
     await startTransition(async () => {
       try {
-        setCurrentError(null);
+        setError(null);
         setMoviesList([]);
 
         const currentLoadingMovies = await fetchMovies(
@@ -50,16 +40,13 @@ const MoviesListContextProvider: FC<{ children: ReactNode }> = ({
 
         result = currentLoadingMovies;
       } catch (error) {
-        setCurrentError(
+        setError(
           error instanceof Error ? error.message : 'Неопознанная ошибка',
         );
         result = [];
       }
     });
-    console.log(error);
-    console.log(result);
     setMoviesList(moviesList.concat(result));
-    console.log(moviesList);
     return result;
   };
 
@@ -77,5 +64,3 @@ const MoviesListContextProvider: FC<{ children: ReactNode }> = ({
     </MoviesListContext.Provider>
   );
 };
-
-export default MoviesListContextProvider;

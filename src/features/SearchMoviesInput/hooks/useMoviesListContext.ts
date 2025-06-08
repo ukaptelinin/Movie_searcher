@@ -1,10 +1,10 @@
-import { MoviesListContext } from '@/entities/movies-list/model/MoviesListContext/context';
-import { MoviesResponse } from '@/shared/api/types';
+import {
+  IMoviesResponseContext,
+  MoviesListContext,
+} from '@/entities/movies-list/model/MoviesListContext/context';
 import { useContext } from 'react';
 
-export const useMoviesListContext = (): ((
-  movieTitle: string,
-) => Promise<MoviesResponse[]>) => {
-  const { getMovies } = useContext(MoviesListContext);
-  return getMovies;
+export const useMoviesListContext = (): IMoviesResponseContext => {
+  const context = useContext(MoviesListContext);
+  return context;
 };

@@ -6,7 +6,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useMoviesListContext } from '../hooks/useMoviesListContext';
 
 export const SearchMoviesInput: FC = () => {
-  const getMovies = useMoviesListContext();
+  const { getMovies } = useMoviesListContext();
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
