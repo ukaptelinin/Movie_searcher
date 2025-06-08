@@ -36,28 +36,28 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
   };
 
   const getMovies = async (movieTitle: string): Promise<MoviesResponse[]> => {
-    try {
-      startTransition(() => {
+    let result: MoviesResponse[] = [];
+
+    await startTransition(async () => {
+      try {
         setCurrentError(null);
         setMoviesList([]);
-      });
 
-      const currentLoadingMovies = await fetchMovies(
-        movieTitle,
-        moviesPageNumber,
-      );
-      startTransition(() => {
-        setMoviesList(moviesList.concat(currentLoadingMovies));
-      });
-      return currentLoadingMovies;
-    } catch (error) {
-      startTransition(() => {
+        const currentLoadingMovies = await fetchMovies(
+          movieTitle,
+          moviesPageNumber,
+        );
+
+        result = currentLoadingMovies;
+      } catch (error) {
         setCurrentError(
           error instanceof Error ? error.message : 'Неопознанная ошибка',
         );
-      });
-      return [];
-    }
+        result = [];
+      }
+    });
+    setMoviesList(moviesList.concat(result));
+    return result;
   };
 
   return (
