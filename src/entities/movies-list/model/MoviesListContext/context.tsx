@@ -11,7 +11,7 @@ interface IMoviesResponseContext {
   getMovies: (movieTitle: string) => Promise<MoviesResponse[]>;
 }
 
-export const MoviesResponseContext = createContext<IMoviesResponseContext>({
+export const MoviesListContext = createContext<IMoviesResponseContext>({
   moviesList: [],
   error: null,
   moviesPageNumber: 1,
@@ -19,7 +19,7 @@ export const MoviesResponseContext = createContext<IMoviesResponseContext>({
   getMovies: () => Promise.resolve([]),
 });
 
-const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
+const MoviesListContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
@@ -56,12 +56,15 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
         result = [];
       }
     });
+    console.log(error);
+    console.log(result);
     setMoviesList(moviesList.concat(result));
+    console.log(moviesList);
     return result;
   };
 
   return (
-    <MoviesResponseContext.Provider
+    <MoviesListContext.Provider
       value={{
         moviesList,
         error,
@@ -71,8 +74,8 @@ const MoviesResponseContextProvider: FC<{ children: ReactNode }> = ({
       }}
     >
       {children}
-    </MoviesResponseContext.Provider>
+    </MoviesListContext.Provider>
   );
 };
 
-export default MoviesResponseContextProvider;
+export default MoviesListContextProvider;
