@@ -1,7 +1,7 @@
 import {
   IMoviesResponseContext,
   MoviesListContext,
-} from '@/entities/movies-list/model/MoviesListContext/context';
+} from '@/entities/movies-list/model/context';
 import { useContext } from 'react';
 
 export const useMoviesListContext = (): IMoviesResponseContext => {

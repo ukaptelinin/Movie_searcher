@@ -1,5 +1,5 @@
-import { MoviesContextProvider } from '@/entities/movies-list/model/MoviesListContext/context';
-import MainPage from '@/pages/MainPage/MainPage';
+import { MoviesContextProvider } from '@/entities/movies-list/model/context';
+import { MainPage } from '@/pages/MainPage';
 import { HeroUIProvider } from '@heroui/system';
 import { FC } from 'react';
 import { BrowserRouter } from 'react-router-dom';

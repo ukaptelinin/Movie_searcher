@@ -3,7 +3,7 @@ import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { Form } from '@heroui/form';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import { useMoviesListContext } from '../hooks/useMoviesListContext';
+import { useMoviesListContext } from '@/entities/movies-list';
 
 export const SearchMoviesInput: FC = () => {
   const { getMovies } = useMoviesListContext();
