@@ -1,4 +1,4 @@
-import { fetchMovies } from '@/shared/api/fetchMovies';
+import { fetchMovies } from '@/shared/api';
 import { MoviesResponse } from '@/shared/api/types';
 import { createContext, FC, ReactNode, useState, useTransition } from 'react';
 export interface IMoviesResponseContext {
