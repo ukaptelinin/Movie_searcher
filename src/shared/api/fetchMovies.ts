@@ -3,10 +3,7 @@ import { MoviesResponse } from './types';
 
 const BASE_URL = 'http://www.omdbapi.com/';
 const API_KEY = import.meta.env.VITE_API_KEY;
-export const fetchMovies = async (
-  title: string,
-  pageNumber: number,
-): Promise<MoviesResponse[]> => {
+export const fetchMovies = async (title: string, pageNumber: number): Promise<MoviesResponse[]> => {
   const response = await axios.get<{
     Error: string;
     Search?: MoviesResponse[];

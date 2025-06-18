@@ -1,1 +1,1 @@
-export {useMoviesListContext} from './model/useMoviesListContext';
+export { useMoviesListContext } from './model/useMoviesListContext';

@@ -1,1 +1,1 @@
- export {SearchMoviesInput} from './ui/SearchMoviesInput';
+export { SearchMoviesInput } from './ui/SearchMoviesInput';
