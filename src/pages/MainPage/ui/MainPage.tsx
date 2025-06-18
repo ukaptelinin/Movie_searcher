@@ -1,7 +1,7 @@
-import Navbar from '@/widgets/Navbar/ui/Navbar';
+import { Navbar } from '@/widgets/Navbar';
 import { FC } from 'react';
 
-const MainPage: FC = () => (
+export const MainPage: FC = () => (
   <div className="relative flex flex-col h-screen">
     <Navbar />
     <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16 flex items-center justify-center">
@@ -12,4 +12,3 @@ const MainPage: FC = () => (
     </footer>
   </div>
 );
-export default MainPage;

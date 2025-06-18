@@ -7,8 +7,9 @@ import {
 } from '@heroui/navbar';
 import { FilmIcon } from '@heroicons/react/24/outline';
 import { FC } from 'react';
-import { ThemeSwitch } from '@/features/ThemeSwitch/ThemeSwitch';
-import SearchInput from '@/features/SearchMoviesInput/SearchMoviesInput';
+import { SearchMoviesInput } from '@/features/SearchMoviesInput';
+import { ThemeSwitch } from '@/features/ThemeSwitch';
+
 
 export const Navbar: FC = () => {
   return (
@@ -25,7 +26,7 @@ export const Navbar: FC = () => {
           </Link>
         </NavbarBrand>
         <NavbarItem className="flex items-center gap-4 flex-grow">
-          <SearchInput />
+          <SearchMoviesInput />
           <ThemeSwitch />
         </NavbarItem>
       </NavbarContent>
