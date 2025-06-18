@@ -15,10 +15,7 @@ export const SearchMoviesInput: FC = () => {
   };
 
   return (
-    <Form
-      className="flex items-center gap-2 flex-grow"
-      onSubmit={onSearcheMovie}
-    >
+    <Form className="flex items-center gap-2 flex-grow" onSubmit={onSearcheMovie}>
       <Input
         className="flex-grow"
         name="search"

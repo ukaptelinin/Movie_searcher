@@ -10,20 +10,10 @@ export interface ThemeSwitchProps {
   classNames?: SwitchProps['classNames'];
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({
-  className,
-  classNames,
-}) => {
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
   const { theme, setTheme } = useTheme();
 
-  const {
-    Component,
-    slots,
-    isSelected,
-    getBaseProps,
-    getInputProps,
-    getWrapperProps,
-  } = useSwitch({
+  const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
     isSelected: theme === 'light',
     onChange: () => setTheme(theme === 'light' ? 'dark' : 'light'),
   });
@@ -63,10 +53,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
       >
         {isSelected ? (
           <MoonIcon
-            className={clsx(
-              'h-6 w-6',
-              theme === 'light' ? 'text-default-700' : 'text-default-200',
-            )}
+            className={clsx('h-6 w-6', theme === 'light' ? 'text-default-700' : 'text-default-200')}
           />
         ) : (
           <SunIcon className="h-6 w-6" />

@@ -17,9 +17,7 @@ export const MoviesListContext = createContext<IMoviesResponseContext>({
   getMovies: () => Promise.resolve([]),
 });
 
-export const MoviesContextProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
@@ -33,16 +31,11 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({
         setError(null);
         setMoviesList([]);
 
-        const currentLoadingMovies = await fetchMovies(
-          movieTitle,
-          moviesPageNumber,
-        );
+        const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
 
         result = currentLoadingMovies;
       } catch (error) {
-        setError(
-          error instanceof Error ? error.message : 'Неопознанная ошибка',
-        );
+        setError(error instanceof Error ? error.message : 'Неопознанная ошибка');
         result = [];
       }
     });

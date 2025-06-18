@@ -1,26 +1,16 @@
 import { Link } from '@heroui/link';
-import {
-  Navbar as HeroUINavbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from '@heroui/navbar';
+import { Navbar as HeroUINavbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/navbar';
 import { FilmIcon } from '@heroicons/react/24/outline';
 import { FC } from 'react';
 import { SearchMoviesInput } from '@/features/SearchMoviesInput';
 import { ThemeSwitch } from '@/features/ThemeSwitch';
-
 
 export const Navbar: FC = () => {
   return (
     <HeroUINavbar maxWidth="xl" position="sticky" className="flex flex-row">
       <NavbarContent className="flex flex-1 justify-between">
         <NavbarBrand className="gap-3 max-w-fit">
-          <Link
-            className="flex justify-start items-center gap-1"
-            color="foreground"
-            href="/"
-          >
+          <Link className="flex justify-start items-center gap-1" color="foreground" href="/">
             <FilmIcon className="w-8 h-8 text-primary" />
             <p className="font-bold text-inherit pl-3">MOVIE SEARCHER</p>
           </Link>
