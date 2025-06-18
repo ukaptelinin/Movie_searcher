@@ -16,7 +16,7 @@
     }
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    ".{ts,tsx}": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
