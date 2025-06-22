@@ -34,12 +34,12 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
           .then((result) => {
         
             setMoviesList(result);
-            console.log(moviesList);
+          
             resolve(result);
           })
           .catch((error) => {
             setError(error.message);
-            console.log(error.message);
+          
             resolve([]);
           });
       });
