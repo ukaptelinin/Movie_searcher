@@ -24,23 +24,26 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [isPending, startTransition] = useTransition();
 
   const getMovies = async (movieTitle: string): Promise<MoviesResponse[]> => {
-    let result: MoviesResponse[] = [];
-
-    await startTransition(async () => {
-      try {
+    return new Promise<MoviesResponse[]>((resolve) => {
+      startTransition(() => {
+      
         setError(null);
         setMoviesList([]);
 
-        const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
-
-        result = currentLoadingMovies;
-      } catch (error) {
-        setError(error instanceof Error ? error.message : 'Неопознанная ошибка');
-        result = [];
-      }
+        fetchMovies(movieTitle, moviesPageNumber)
+          .then((result) => {
+        
+            setMoviesList(result);
+            console.log(moviesList);
+            resolve(result);
+          })
+          .catch((error) => {
+            setError(error.message);
+            console.log(error.message);
+            resolve([]);
+          });
+      });
     });
-    setMoviesList(moviesList.concat(result));
-    return result;
   };
 
   return (
