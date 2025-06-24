@@ -6,7 +6,7 @@ export interface IMoviesResponseContext {
   error: string | null;
   moviesPageNumber: number;
   isPending: boolean;
-  getMovies: (movieTitle: string) => Promise<MoviesResponse[]>;
+  getMovies: (movieTitle: string) => Promise<void>;
 }
 
 export const MoviesListContext = createContext<IMoviesResponseContext>({
@@ -14,7 +14,7 @@ export const MoviesListContext = createContext<IMoviesResponseContext>({
   error: null,
   moviesPageNumber: 1,
   isPending: false,
-  getMovies: () => Promise.resolve([]),
+  getMovies: () => Promise.resolve(),
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -23,27 +23,18 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
   const [isPending, startTransition] = useTransition();
 
-  const getMovies = async (movieTitle: string): Promise<MoviesResponse[]> => {
-    return new Promise<MoviesResponse[]>((resolve) => {
-      startTransition(() => {
-      
+  const getMovies = async (movieTitle: string):Promise<void> => {
+  await startTransition(async () => {
+      try {
         setError(null);
         setMoviesList([]);
-
-        fetchMovies(movieTitle, moviesPageNumber)
-          .then((result) => {
-        
-            setMoviesList(result);
-          
-            resolve(result);
-          })
-          .catch((error) => {
-            setError(error.message);
-          
-            resolve([]);
-          });
-      });
-    });
+        const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
+        setMoviesList(currentLoadingMovies);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'Неопознанная ошибка');
+        setMoviesList([]);
+      }
+    });   
   };
 
   return (

@@ -29,7 +29,7 @@ export const fetchMovies = (
     })
     .then(response => {
       if (!response.data.docs.length) {
-        throw new Error('Не верные данные с сервера');
+        throw new Error('Фильмы не найдены');
       }
       return response.data.docs;
     })
@@ -38,7 +38,7 @@ export const fetchMovies = (
         const errorMessage = error.response?.data?.message || error.message;
         throw new Error(`Ошибка запроса: ${errorMessage}`);
       }
-      throw new Error('Фильмы не найдены');
+      throw error;
     });
 };
 
