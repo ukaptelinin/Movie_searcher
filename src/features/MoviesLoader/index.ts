@@ -1,0 +1,1 @@
+export { MoviesLoader } from './ui/MoviesLoader';

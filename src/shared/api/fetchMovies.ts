@@ -7,7 +7,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export const fetchMovies = (
   title: string,
   pageNumber: number,
-  limit: number = 10
+  limit: number = 20
 ): Promise<MoviesResponse[]> => {
   return axios
     .get<{
