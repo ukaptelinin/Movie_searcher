@@ -1,0 +1,1 @@
+export { RenderMoviesList } from './ui/RenderMoviesList';
