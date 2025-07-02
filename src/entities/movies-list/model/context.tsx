@@ -7,7 +7,6 @@ export interface IMoviesResponseContext {
   moviesPageNumber: number;
   isPending: boolean;
   getMovies: (movieTitle: string) => Promise<void>;
-  resetError: () => void;
 }
 
 export const MoviesListContext = createContext<IMoviesResponseContext>({
@@ -16,7 +15,6 @@ export const MoviesListContext = createContext<IMoviesResponseContext>({
   moviesPageNumber: 1,
   isPending: false,
   getMovies: () => Promise.resolve(),
-  resetError: (): void => {},
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -28,6 +26,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const getMovies = async (movieTitle: string):Promise<void> => {
   await startTransition(async () => {
       try {
+        setError(null);
         const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
         setMoviesList(currentLoadingMovies);
       } catch (error) {
@@ -36,7 +35,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
     });   
   };
 
-  const resetError = () => {setError(null)};
+  
 
   return (
     <MoviesListContext.Provider
@@ -46,7 +45,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
         moviesPageNumber,
         isPending,
         getMovies,
-        resetError,
+      
       }}
     >
       {children}

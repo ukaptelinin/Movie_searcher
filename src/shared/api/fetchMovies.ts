@@ -29,14 +29,13 @@ export const fetchMovies = (
     })
     .then(response => {
       if (!response.data.docs.length) {
-        throw new Error('Фильмы не найдены');
+        throw new Error('Фильмы не найдены.');
       }
       return response.data.docs;
     })
     .catch(error => {
       if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || error.message;
-        throw new Error(`Ошибка запроса: ${errorMessage}`);
+        throw new Error('Что то пошло не так!');
       }
       throw error;
     });
