@@ -23,8 +23,8 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
   const [isPending, startTransition] = useTransition();
 
-  const getMovies = async (movieTitle: string):Promise<void> => {
-  await startTransition(async () => {
+  const getMovies = async (movieTitle: string): Promise<void> => {
+    await startTransition(async () => {
       try {
         setError(null);
         const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
@@ -32,10 +32,8 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
       } catch (error) {
         setError(error instanceof Error ? error.message : 'Неопознанная ошибка');
       }
-    });   
+    });
   };
-
-  
 
   return (
     <MoviesListContext.Provider
@@ -45,7 +43,6 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
         moviesPageNumber,
         isPending,
         getMovies,
-      
       }}
     >
       {children}
