@@ -34,9 +34,10 @@ export const fetchMovies = (
       return response.data.docs;
     })
     .catch((error) => {
-      if (axios.isAxiosError(error)) {
+      {
         throw new Error('Что то пошло не так!');
       }
+
       throw error;
     });
 };
