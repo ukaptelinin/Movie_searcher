@@ -28,16 +28,16 @@ export const fetchMovies = (
       },
     })
     .then((response) => {
-      if (!response.data.docs.length) {
-        throw new Error('Фильмы не найдены.');
+      if (response.data.docs.length) {
+        return response.data.docs;
+      } else {
+        return [];
       }
-      return response.data.docs;
     })
     .catch((error) => {
       {
-        throw new Error('Что то пошло не так!');
+        error.message = 'Что-то пошло не так или фильмы не найдены?';
+        throw error;
       }
-
-      throw error;
     });
 };

@@ -3,7 +3,7 @@ import { MoviesResponse } from '@/shared/api/types';
 import { FC, useContext } from 'react';
 import { MoviesCard } from './MoviesCard';
 
-export const RenderMoviesList: FC = () => {
+export const MoviesList: FC = () => {
   const { moviesList } = useContext(MoviesListContext);
   return (
     <div className="flex flex-wrap gap-4">

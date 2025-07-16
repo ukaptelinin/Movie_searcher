@@ -3,7 +3,7 @@ import { FC, useContext } from 'react';
 import { MoviesListContext } from '@/entities/movies-list/model/context';
 import { MoviesListLoader } from '@/features/MoviesListLoader';
 import { ErrorPage } from '@/shared/ErrorPage';
-import { RenderMoviesList } from '@/features/RenderMoviesList';
+import { MoviesList } from '@/widgets/MoviesList';
 
 export const MainPage: FC = () => {
   const { error, isPending } = useContext(MoviesListContext);
@@ -17,9 +17,9 @@ export const MainPage: FC = () => {
       return <ErrorPage />;
     }
 
-    return <RenderMoviesList />;
+    return <MoviesList />;
   })(isPending, error);
-  
+
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar />
