@@ -7,7 +7,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export const fetchMovies = (
   title: string,
   pageNumber: number,
-  limit: number = 10
+  limit: number = 20,
 ): Promise<MoviesResponse[]> => {
   return axios
     .get<{
@@ -27,18 +27,10 @@ export const fetchMovies = (
         'X-API-KEY': API_KEY,
       },
     })
-    .then(response => {
-      if (!response.data.docs.length) {
+    .then((response) => {
+      if (!response.data?.docs?.length) {
         throw new Error('Фильмы не найдены');
       }
       return response.data.docs;
-    })
-    .catch(error => {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || error.message;
-        throw new Error(`Ошибка запроса: ${errorMessage}`);
-      }
-      throw error;
     });
 };
-

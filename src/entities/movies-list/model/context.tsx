@@ -23,16 +23,20 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
   const [isPending, startTransition] = useTransition();
 
-  const getMovies = async (movieTitle: string):Promise<void> => {
-  await startTransition(async () => {
+  const getMovies = async (movieTitle: string): Promise<void> => {
+    await startTransition(async () => {
       try {
         setError(null);
         const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
         setMoviesList(currentLoadingMovies);
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'Неопознанная ошибка');
+        setError(
+          error instanceof Error && error.message === 'Фильмы не найдены'
+            ? error.message
+            : 'Что-то пошло не так',
+        );
       }
-    });   
+    });
   };
 
   return (
