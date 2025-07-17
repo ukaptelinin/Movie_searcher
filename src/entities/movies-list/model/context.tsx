@@ -30,7 +30,11 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
         const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
         setMoviesList(currentLoadingMovies);
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'Неопознанная ошибка');
+        setError(
+          error instanceof Error && error.message === 'Фильмы не найдены'
+            ? error.message
+            : 'Что-то пошло не так',
+        );
       }
     });
   };
