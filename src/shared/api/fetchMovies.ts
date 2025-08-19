@@ -8,7 +8,7 @@ export const fetchMovies = (
   title: string,
   pageNumber: number,
   limit: number = 20,
-): Promise<MoviesResponse[]> => {
+): Promise<{ docs: MoviesResponse[]; pages: number }> => {
   return axios
     .get<{
       docs: MoviesResponse[];
@@ -31,6 +31,9 @@ export const fetchMovies = (
       if (!response.data?.docs?.length) {
         throw new Error('Фильмы не найдены');
       }
-      return response.data.docs;
+      return {
+        docs: response.data.docs,
+        pages: response.data.pages,
+      };
     });
 };

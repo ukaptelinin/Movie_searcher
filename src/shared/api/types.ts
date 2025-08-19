@@ -24,9 +24,9 @@ export interface MoviesResponse {
     url: string;
   };
   poster: {
-    url: string;
-    previewUrl: string;
-  };
+    url: string | null;
+    previewUrl: string | null;
+  } | null;
   backdrop: {
     url: string;
     previewUrl: string;
