@@ -27,14 +27,12 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [isPending, startTransition] = useTransition();
   const [totalPages, setTotalPages] = useState(0);
 
-
-
   const getFreshMovies = async (movieTitle: string): Promise<void> => {
     await startTransition(async () => {
       try {
         setError(null);
-        if(movieTitle === '') return;
-        setCurrentTitle (movieTitle);
+        if (movieTitle === '') return;
+        setCurrentTitle(movieTitle);
         pageNumber.current = 1;
         setMoviesList([]);
         console.log(moviesList.length);
@@ -57,7 +55,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
       try {
         setError(null);
         console.log('NEXT 2');
-       // if (pageNumber.current > totalPages || !currentTitle) return;
+        // if (pageNumber.current > totalPages || !currentTitle) return;
         console.log('NEXT 3');
 
         pageNumber.current = pageNumber.current + 1;

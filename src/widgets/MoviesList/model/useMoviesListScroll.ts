@@ -1,7 +1,7 @@
-import { MoviesResponse } from "@/shared/api/types";
-import { RefObject, useEffect, useMemo, useRef } from "react";
+import { MoviesResponse } from '@/shared/api/types';
+import { RefObject, useEffect, useMemo, useRef } from 'react';
 
- interface UseMoviesListParams {
+interface UseMoviesListParams {
   moviesList: MoviesResponse[];
   currentTitle: string;
   isPending: boolean;
@@ -9,11 +9,8 @@ import { RefObject, useEffect, useMemo, useRef } from "react";
 }
 
 interface UseMoviesListHookReturn {
-
   lastElementRef: RefObject<HTMLDivElement | null>;
   scrollContainerRef: RefObject<HTMLDivElement | null>;
-
-
 }
 
 export const useMoviesListScroll = ({
@@ -22,22 +19,17 @@ export const useMoviesListScroll = ({
   isPending,
   loadMoreMovies,
 }: UseMoviesListParams): UseMoviesListHookReturn => {
-
-const lastElementRef = useRef<HTMLDivElement | null>(null);
+  const lastElementRef = useRef<HTMLDivElement | null>(null);
   const isPendingRef = useRef(isPending);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   isPendingRef.current = isPending;
-  
 
-
-
-
-useEffect(() => {
-  if (currentTitle && scrollContainerRef.current) {
-    scrollContainerRef.current.scrollTop = 0;
-  }
-}, [currentTitle]);
+  useEffect(() => {
+    if (currentTitle && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [currentTitle]);
 
   const observer = useMemo(
     () =>
@@ -45,7 +37,6 @@ useEffect(() => {
         (entries) => {
           const [entry] = entries;
           if (entry.isIntersecting && moviesList.length > 0 && !isPendingRef.current) {
-        
             loadMoreMovies();
           }
         },
@@ -64,9 +55,7 @@ useEffect(() => {
     };
   }, [observer]);
 
-
-
-    return {
+  return {
     lastElementRef,
     scrollContainerRef,
   };
