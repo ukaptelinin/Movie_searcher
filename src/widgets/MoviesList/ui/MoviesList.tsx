@@ -1,41 +1,15 @@
 import { MoviesListContext } from '@/entities/movies-list/model/context';
 import { MoviesResponse } from '@/shared/api/types';
-import { FC, useContext, useEffect, useMemo, useRef } from 'react';
+import { FC, useContext } from 'react';
 import { MoviesCard } from './MoviesCard';
 import { MoviesListLoader } from '@/features/MoviesListLoader';
+import { useMoviesListScroll } from '../model/useMoviesListScroll';
 
 export const MoviesList: FC = () => {
-  const { moviesList, loadMoreMovies, isPending } = useContext(MoviesListContext);
-  const lastElementRef = useRef<HTMLDivElement | null>(null);
-  const isPendingRef = useRef(isPending);
-  isPendingRef.current = isPending;
-
-  const observer = useMemo(
-    () =>
-      new IntersectionObserver(
-        (entries) => {
-          const [entry] = entries;
-          if (entry.isIntersecting && moviesList.length > 0) {
-            loadMoreMovies();
-          }
-        },
-        { threshold: 0.1 },
-      ),
-    [moviesList.length],
-  );
-
-  useEffect(() => {
-    if (lastElementRef.current) {
-      observer?.observe(lastElementRef.current);
-    }
-
-    return () => {
-      observer?.disconnect();
-    };
-  }, [observer]);
-
+  const { moviesList, currentTitle, loadMoreMovies, isPending } = useContext(MoviesListContext);
+  const {lastElementRef, scrollContainerRef} = useMoviesListScroll({moviesList, currentTitle, isPending,loadMoreMovies});
   return (
-    <div className="flex flex-wrap gap-4 h-[calc(100vh-120px)] overflow-y-auto">
+    <div ref={scrollContainerRef}  className="flex flex-wrap gap-4 h-[calc(100vh-120px)] overflow-y-auto">
       {moviesList.map((item: MoviesResponse, index: number) => {
         const isLastItem = index === moviesList.length - 1;
         return (

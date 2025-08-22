@@ -6,12 +6,11 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useMoviesListContext } from '@/entities/movies-list';
 
 export const SearchMoviesInput: FC = () => {
-  const { getFreshMovies, setMoviesTitle } = useMoviesListContext();
+  const { getFreshMovies } = useMoviesListContext();
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get('search') as string;
-    setMoviesTitle(title);
     await getFreshMovies(title);
   };
 
