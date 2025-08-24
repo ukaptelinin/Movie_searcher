@@ -20,12 +20,12 @@ export const MoviesListContext = createContext<IMoviesResponseContext>({
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const pageNumber = useRef(1);
+  const pageNumberRef = useRef(1);
+  const totalPagesRef = useRef(1);
   const [currentTitle, setCurrentTitle] = useState('');
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [totalPages, setTotalPages] = useState(0);
 
   const getFreshMovies = async (movieTitle: string): Promise<void> => {
     await startTransition(async () => {
@@ -33,11 +33,10 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
         setError(null);
         if (movieTitle === '') return;
         setCurrentTitle(movieTitle);
-        pageNumber.current = 1;
+        pageNumberRef.current = 1;
         setMoviesList([]);
         const { docs, pages } = await fetchMovies(movieTitle, 1);
-
-        setTotalPages(pages);
+        totalPagesRef.current = pages;
         setMoviesList(docs);
       } catch (error) {
         setError(
@@ -51,12 +50,11 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
 
   const loadMoreMovies = async (): Promise<void> => {
     await startTransition(async () => {
+      pageNumberRef.current = pageNumberRef.current + 1;
+      if (pageNumberRef.current === totalPagesRef.current) return;
       try {
         setError(null);
-
-        pageNumber.current = pageNumber.current + 1;
-        const { docs } = await fetchMovies(currentTitle, pageNumber.current);
-
+        const { docs } = await fetchMovies(currentTitle, pageNumberRef.current);
         setMoviesList((prevMovies) => [...prevMovies, ...docs]);
       } catch (error) {
         setError(
