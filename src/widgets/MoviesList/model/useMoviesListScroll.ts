@@ -1,14 +1,14 @@
 import { MoviesResponse } from '@/shared/api/types';
 import { RefObject, useEffect, useMemo, useRef } from 'react';
 
-interface UseMoviesListParams {
+interface Props {
   moviesList: MoviesResponse[];
   currentTitle: string;
   isPending: boolean;
   loadMoreMovies: () => Promise<void>;
 }
 
-interface UseMoviesListHookReturn {
+interface Result {
   lastElementRef: RefObject<HTMLDivElement | null>;
   scrollContainerRef: RefObject<HTMLDivElement | null>;
 }
@@ -18,7 +18,7 @@ export const useMoviesListScroll = ({
   currentTitle,
   isPending,
   loadMoreMovies,
-}: UseMoviesListParams): UseMoviesListHookReturn => {
+}: Props): Result => {
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   const isPendingRef = useRef(isPending);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -47,7 +47,7 @@ export const useMoviesListScroll = ({
 
   useEffect(() => {
     if (lastElementRef.current) {
-      observer?.observe(lastElementRef.current);
+      observer.observe(lastElementRef.current);
     }
 
     return () => {

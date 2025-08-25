@@ -50,10 +50,11 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
 
   const loadMoreMovies = async (): Promise<void> => {
     await startTransition(async () => {
-      pageNumberRef.current = pageNumberRef.current + 1;
+      
       if (pageNumberRef.current === totalPagesRef.current) return;
       try {
         setError(null);
+        pageNumberRef.current = pageNumberRef.current + 1;
         const { docs } = await fetchMovies(currentTitle, pageNumberRef.current);
         setMoviesList((prevMovies) => [...prevMovies, ...docs]);
       } catch (error) {
@@ -62,6 +63,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
             ? error.message
             : 'Что-то пошло не так',
         );
+        pageNumberRef.current = pageNumberRef.current - 1;
       }
     });
   };
