@@ -50,7 +50,6 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
 
   const loadMoreMovies = async (): Promise<void> => {
     await startTransition(async () => {
-      
       if (pageNumberRef.current === totalPagesRef.current) return;
       try {
         setError(null);

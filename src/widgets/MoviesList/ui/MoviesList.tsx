@@ -14,9 +14,7 @@ export const MoviesList: FC = () => {
     loadMoreMovies,
   });
   return (
-    <div
-      ref={scrollContainerRef}
-      className="flex flex-wrap gap-4 h-full overflow-y-auto"    >
+    <div ref={scrollContainerRef} className="flex flex-wrap gap-4 h-full overflow-y-auto">
       {moviesList.map((item: MoviesResponse, index: number) => {
         const isLastItem = index === moviesList.length - 1;
         return (
