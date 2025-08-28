@@ -11,7 +11,7 @@ interface MoviesCardProps {
 
 export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => (
   <Card className="flex flex-col h-[256px] w-[200px] flex-none" key={id} ref={ref}>
-    <CardHeader className="pb-0 pt-2 px-4 w-full" style={{ maxWidth: '200px' }}>
+    <CardHeader className="pb-0 pt-2 px-4 w-[200px]">
       <h4 className="font-bold text-medium overflow-hidden text-ellipsis whitespace-nowrap w-full">
         {title}
       </h4>

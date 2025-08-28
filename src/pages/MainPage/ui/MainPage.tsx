@@ -10,6 +10,7 @@ export const MainPage: FC = () => {
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar />
+
       <main className="container mx-auto max-w-7xl px-6 h-[calc(100vh-120px)]">
         <div className="w-full h-full ">{error ? <ErrorPage /> : <MoviesList />}</div>
       </main>
