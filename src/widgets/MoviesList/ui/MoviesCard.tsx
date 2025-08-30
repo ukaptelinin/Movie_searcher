@@ -11,7 +11,14 @@ interface MoviesCardProps {
 
 export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => (
   <Card className="flex flex-col h-[300px] w-[200px] flex-none" key={id} ref={ref}>
-    <CardHeader className="py-2 px-4 w-[200px]">
+    <CardHeader
+      className="py-2 px-4 w-[200px]"
+      style={
+        {
+          width: '200px',
+        } /*Применены инлайн стили, так как стили заданные в TailwindCSS совместно с HeroUI работают не корректно*/
+      }
+    >
       <h4 className="font-bold text-medium  overflow-hidden text-ellipsis whitespace-nowrap w-full">
         {title}
       </h4>
@@ -27,7 +34,15 @@ export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => (
           height={240}
         />
       ) : (
-        <div className="rounded-xl w-full h-full " />
+        <div
+          className="rounded-xl w-full h-full"
+          style={
+            {
+              maxWidth: '200px',
+              height: '250px',
+            } /*Применены инлайн стили, так как стили заданные в TailwindCSS совместно с HeroUI работают не корректно*/
+          }
+        />
       )}
     </CardBody>
   </Card>

@@ -11,7 +11,6 @@ export const MainPage: FC = () => {
     <div className="relative flex flex-col h-screen">
       <Navbar />
       <main className="container mx-auto max-w-7xl px-6 h-[calc(100vh-120px)]">
-        <div className="w-[200px]"></div>
         <div className="w-full h-full ">{error ? <ErrorPage /> : <MoviesList />}</div>
       </main>
       <footer className="w-full flex items-center justify-center py-3 h-12">MOVIE SEARCHER</footer>

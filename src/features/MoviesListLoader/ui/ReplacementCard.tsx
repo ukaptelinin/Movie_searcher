@@ -8,8 +8,16 @@ export const ReplacementCard: FC = () => (
       <CardHeader className="py-2 px-4 w-full h-6" />
     </Skeleton>
     <Skeleton className="rounded-lg">
-      <CardBody className="overflow-visible py-2 flex-1 w-full h-full">
-        <Skeleton className="rounded-xl" />
+      <CardBody className="overflow-visible py-2 flex-1 ">
+        <Skeleton
+          className="rounded-xl w-full h-full"
+          style={
+            {
+              minHeight: '300px',
+              minWidth: '200px',
+            } /*Применены инлайн стили, так как стили заданные в TailwindCSS совместно с HeroUI работают не корректно*/
+          }
+        />
       </CardBody>
     </Skeleton>
   </Card>
