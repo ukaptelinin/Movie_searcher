@@ -1,34 +1,43 @@
 import { fetchMovies } from '@/shared/api';
 import { MoviesResponse } from '@/shared/api/types';
-import { createContext, FC, ReactNode, useState, useTransition } from 'react';
+import { createContext, FC, ReactNode, useRef, useState, useTransition } from 'react';
 export interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
+  currentTitle: string;
   error: string | null;
-  moviesPageNumber: number;
   isPending: boolean;
-  getMovies: (movieTitle: string) => Promise<void>;
+  getFreshMovies: (movieTitle: string) => Promise<void>;
+  loadMoreMovies: () => Promise<void>;
 }
 
 export const MoviesListContext = createContext<IMoviesResponseContext>({
   moviesList: [],
+  currentTitle: '',
   error: null,
-  moviesPageNumber: 1,
   isPending: false,
-  getMovies: () => Promise.resolve(),
+  getFreshMovies: () => Promise.resolve(),
+  loadMoreMovies: () => Promise.resolve(),
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const pageNumberRef = useRef(1);
+  const totalPagesRef = useRef(1);
+  const [currentTitle, setCurrentTitle] = useState('');
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [moviesPageNumber, setMoviesPageNumber] = useState<number>(1);
   const [isPending, startTransition] = useTransition();
 
-  const getMovies = async (movieTitle: string): Promise<void> => {
+  const getFreshMovies = async (movieTitle: string): Promise<void> => {
     await startTransition(async () => {
       try {
         setError(null);
-        const currentLoadingMovies = await fetchMovies(movieTitle, moviesPageNumber);
-        setMoviesList(currentLoadingMovies);
+        if (movieTitle === '') return;
+        setCurrentTitle(movieTitle);
+        pageNumberRef.current = 1;
+        setMoviesList([]);
+        const { docs, pages } = await fetchMovies(movieTitle, 1);
+        totalPagesRef.current = pages;
+        setMoviesList(docs);
       } catch (error) {
         setError(
           error instanceof Error && error.message === 'Фильмы не найдены'
@@ -39,14 +48,34 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
     });
   };
 
+  const loadMoreMovies = async (): Promise<void> => {
+    await startTransition(async () => {
+      if (pageNumberRef.current === totalPagesRef.current) return;
+      try {
+        setError(null);
+        pageNumberRef.current = pageNumberRef.current + 1;
+        const { docs } = await fetchMovies(currentTitle, pageNumberRef.current);
+        setMoviesList((prevMovies) => [...prevMovies, ...docs]);
+      } catch (error) {
+        setError(
+          error instanceof Error && error.message === 'Фильмы не найдены'
+            ? error.message
+            : 'Что-то пошло не так',
+        );
+        pageNumberRef.current = pageNumberRef.current - 1;
+      }
+    });
+  };
+
   return (
     <MoviesListContext.Provider
       value={{
         moviesList,
+        currentTitle,
         error,
-        moviesPageNumber,
         isPending,
-        getMovies,
+        getFreshMovies,
+        loadMoreMovies,
       }}
     >
       {children}
