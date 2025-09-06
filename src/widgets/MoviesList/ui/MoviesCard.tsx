@@ -1,6 +1,7 @@
 import { FC, RefObject } from 'react';
 import { Card, CardHeader, CardBody } from '@heroui/card';
 import { Image } from '@heroui/image';
+import { Link } from 'react-router-dom';
 
 interface MoviesCardProps {
   id: number;
@@ -9,8 +10,11 @@ interface MoviesCardProps {
   ref?: RefObject<HTMLDivElement | null> | null;
 }
 
-export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => (
+export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => {
+  const url = `/movie/${id}`;
+  return (
   <Card className="flex flex-col h-[300px] w-[200px] flex-none" key={id} ref={ref}>
+    <Link to={url} style={{ textDecoration: 'none' }}>
     <CardHeader
       className="py-2 px-4 w-[200px]"
       style={
@@ -45,5 +49,6 @@ export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => (
         />
       )}
     </CardBody>
+    </Link>
   </Card>
-);
+)};
