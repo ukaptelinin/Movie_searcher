@@ -1,11 +1,15 @@
 import { MoviesResponse } from '@/shared/api/types';
 import { RefObject, useEffect, useMemo, useRef } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 interface Props {
   moviesList: MoviesResponse[];
   currentTitle: string;
+  isUrlChange: boolean;
   isPending: boolean;
+  navigate: NavigateFunction;
   loadMoreMovies: () => Promise<void>;
+  toggleIsUrlChange: () => void;
 }
 
 interface Result {
@@ -13,45 +17,45 @@ interface Result {
   scrollContainerRef: RefObject<HTMLDivElement | null>;
 }
 
-export const useMoviesListScroll = ({
-  moviesList,
-  currentTitle,
-  isPending,
-  loadMoreMovies,
-}: Props): Result => {
+export const useMoviesListScroll = ({ moviesList, isPending, loadMoreMovies }: Props): Result => {
   const lastElementRef = useRef<HTMLDivElement | null>(null);
-  const isPendingRef = useRef(isPending);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const isPendingRef = useRef(isPending);
 
-  isPendingRef.current = isPending;
-
+  // Синхронизируем ref с актуальным состоянием загрузки
   useEffect(() => {
-    if (currentTitle && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [currentTitle]);
+    isPendingRef.current = isPending;
+  }, [isPending]);
 
+  // Создаем IntersectionObserver для отслеживания последнего элемента
   const observer = useMemo(
     () =>
       new IntersectionObserver(
         (entries) => {
           const [entry] = entries;
+          // Если последний элемент виден, данных больше нет и не идет загрузка - подгружаем новые
           if (entry.isIntersecting && moviesList.length > 0 && !isPendingRef.current) {
             loadMoreMovies();
           }
         },
-        { threshold: 0.1 },
+        { threshold: 0.1 }, // Срабатывает когда 10% элемента видно
       ),
-    [moviesList.length],
+    [moviesList.length, loadMoreMovies],
   );
 
+  // Подключаем observer к последнему элементу
   useEffect(() => {
-    if (lastElementRef.current) {
-      observer.observe(lastElementRef.current);
+    const currentElement = lastElementRef.current;
+
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
+    // Отключаем observer при размонтировании
     return () => {
-      observer?.disconnect();
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
     };
   }, [observer]);
 

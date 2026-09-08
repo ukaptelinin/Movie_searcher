@@ -5,18 +5,22 @@ export interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
   currentTitle: string;
   error: string | null;
+  isUrlChange: boolean;
   isPending: boolean;
   getFreshMovies: (movieTitle: string) => Promise<void>;
   loadMoreMovies: () => Promise<void>;
+  toggleIsUrlChange: () => void;
 }
 
 export const MoviesListContext = createContext<IMoviesResponseContext>({
   moviesList: [],
   currentTitle: '',
   error: null,
+  isUrlChange: false,
   isPending: false,
   getFreshMovies: () => Promise.resolve(),
   loadMoreMovies: () => Promise.resolve(),
+  toggleIsUrlChange: () => {},
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -25,6 +29,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [currentTitle, setCurrentTitle] = useState('');
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isUrlChange, setIsUrlChange] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
 
   const getFreshMovies = async (movieTitle: string): Promise<void> => {
@@ -66,6 +71,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
       }
     });
   };
+  const toggleIsUrlChange = (): void => setIsUrlChange(!isUrlChange);
 
   return (
     <MoviesListContext.Provider
@@ -73,9 +79,11 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
         moviesList,
         currentTitle,
         error,
+        isUrlChange,
         isPending,
         getFreshMovies,
         loadMoreMovies,
+        toggleIsUrlChange,
       }}
     >
       {children}

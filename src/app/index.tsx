@@ -10,8 +10,8 @@ export const App: FC = () => (
     <MoviesContextProvider>
       <HeroUIProvider>
         <MainPage>
-          <RootRoutes/>
-        </MainPage>  
+          <RootRoutes />
+        </MainPage>
       </HeroUIProvider>
     </MoviesContextProvider>
   </BrowserRouter>
