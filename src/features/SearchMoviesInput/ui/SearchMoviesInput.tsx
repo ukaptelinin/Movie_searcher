@@ -6,21 +6,13 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useMoviesListContext } from '@/entities/movies-list';
 import { useNavigate } from 'react-router-dom';
 
-const SEARCH_STORAGE_KEY = 'movies_search_query';
-
 export const SearchMoviesInput: FC = () => {
   const { getFreshMovies } = useMoviesListContext();
   const navigate = useNavigate();
-   const savedSearch = sessionStorage.getItem(SEARCH_STORAGE_KEY);
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get('search') as string;
-
-    if (title && title.trim() !== '') {
-      sessionStorage.setItem(SEARCH_STORAGE_KEY, title);
-    }
-
     await getFreshMovies(title);
     navigate(`/movies`);
   };
@@ -30,7 +22,6 @@ export const SearchMoviesInput: FC = () => {
       <Input
         className="flex-grow"
         name="search"
-        defaultValue={savedSearch && savedSearch.trim() !== '' ? savedSearch : undefined}
         labelPlacement="outside"
         placeholder="Фильмы, сериалы"
         endContent={

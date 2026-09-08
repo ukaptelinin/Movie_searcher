@@ -1,10 +1,17 @@
-
 import { Button } from '@heroui/button';
-import { Link } from '@heroui/link';
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export const ReturnButton: FC = () => (
-  <Button showAnchorIcon as={Link} color="primary" href={'/movies'} variant="solid">
-    Button Link
-  </Button>
-);
+export const ReturnButton: FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Button
+      color="primary"
+      variant="solid"
+      onPress={() => navigate(-1)} // Навигация назад по истории React Router
+    >
+      Назад к списку
+    </Button>
+  );
+};
