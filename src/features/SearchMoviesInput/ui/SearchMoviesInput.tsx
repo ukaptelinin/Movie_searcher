@@ -7,7 +7,7 @@ import { useMoviesListContext } from '@/entities/movies-list';
 import { useNavigate } from 'react-router-dom';
 
 export const SearchMoviesInput: FC = () => {
-  const { getFreshMovies,toggleIsNewInput } = useMoviesListContext();
+  const { getFreshMovies, toggleIsNewInput } = useMoviesListContext();
   const navigate = useNavigate();
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

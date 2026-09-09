@@ -7,8 +7,16 @@ import { useMoviesListScroll } from '../model/useMoviesListScroll';
 import { useNavigate } from 'react-router-dom';
 
 export const MoviesList: FC = () => {
-  const { moviesList, currentTitle, isUrlChange, isPending, isNewInput,toggleIsNewInput, loadMoreMovies, toggleIsUrlChange } =
-    useContext(MoviesListContext);
+  const {
+    moviesList,
+    currentTitle,
+    isUrlChange,
+    isPending,
+    isNewInput,
+    toggleIsNewInput,
+    loadMoreMovies,
+    toggleIsUrlChange,
+  } = useContext(MoviesListContext);
   const navigate = useNavigate();
 
   const { lastElementRef, scrollContainerRef } = useMoviesListScroll({
@@ -32,17 +40,17 @@ export const MoviesList: FC = () => {
     }
   }, [scrollContainerRef]);
 
-   // 2. СБРОС СКРОЛЛА: срабатывает строго при изменении `isNewInput`
+  // 2. СБРОС СКРОЛЛА: срабатывает строго при изменении `isNewInput`
   useLayoutEffect(() => {
     if (isNewInput) {
       // Удаляем сохраненную позицию
       sessionStorage.removeItem('movies_scroll_pos');
-      
+
       // Физически прокручиваем контейнер на самый верх
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = 0;
       }
-      
+
       // Сбрасываем флаг нового ввода
       toggleIsNewInput();
     }

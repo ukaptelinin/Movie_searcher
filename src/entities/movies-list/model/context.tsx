@@ -25,7 +25,6 @@ export const MoviesListContext = createContext<IMoviesResponseContext>({
   loadMoreMovies: () => Promise.resolve(),
   toggleIsUrlChange: () => {},
   toggleIsNewInput: () => {},
-
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -78,7 +77,7 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
     });
   };
   const toggleIsUrlChange = (): void => setIsUrlChange(!isUrlChange);
-   const toggleIsNewInput = (): void => setisNewInput(!isNewInput);
+  const toggleIsNewInput = (): void => setisNewInput(!isNewInput);
 
   return (
     <MoviesListContext.Provider
