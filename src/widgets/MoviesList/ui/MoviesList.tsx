@@ -7,7 +7,7 @@ import { useMoviesListScroll } from '../model/useMoviesListScroll';
 import { useNavigate } from 'react-router-dom';
 
 export const MoviesList: FC = () => {
-  const { moviesList, currentTitle, isUrlChange, isPending, loadMoreMovies, toggleIsUrlChange } =
+  const { moviesList, currentTitle, isUrlChange, isPending, isNewInput,toggleIsNewInput, loadMoreMovies, toggleIsUrlChange } =
     useContext(MoviesListContext);
   const navigate = useNavigate();
 
@@ -32,14 +32,32 @@ export const MoviesList: FC = () => {
     }
   }, [scrollContainerRef]);
 
-  // 2. Восстанавливаем скролл после того, как DOM полностью отрисован браузером
+   // 2. СБРОС СКРОЛЛА: срабатывает строго при изменении `isNewInput`
   useLayoutEffect(() => {
+    if (isNewInput) {
+      // Удаляем сохраненную позицию
+      sessionStorage.removeItem('movies_scroll_pos');
+      
+      // Физически прокручиваем контейнер на самый верх
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = 0;
+      }
+      
+      // Сбрасываем флаг нового ввода
+      toggleIsNewInput();
+    }
+  }, [isNewInput, toggleIsNewInput, scrollContainerRef]);
+
+  // 3. ВОССТАНОВЛЕНИЕ СКРОЛЛА: срабатывает при загрузке элементов
+  useLayoutEffect(() => {
+    // Если идет процесс сброса для нового ввода — пропускаем восстановление
+    if (isNewInput) return;
+
     const savedScrollPos = sessionStorage.getItem('movies_scroll_pos');
 
     if (savedScrollPos && moviesList.length > 0) {
       const scrollPos = Number(savedScrollPos);
 
-      // Используем requestAnimationFrame, чтобы дождаться окончания Layout-фазы браузера
       const timer = requestAnimationFrame(() => {
         if (scrollContainerRef.current) {
           scrollContainerRef.current.scrollTop = scrollPos;
@@ -48,7 +66,7 @@ export const MoviesList: FC = () => {
 
       return () => cancelAnimationFrame(timer);
     }
-  }, [moviesList.length]); // Срабатывает, когда данные загружены/восстановлены в state
+  }, [moviesList.length, isNewInput, scrollContainerRef]);
 
   return (
     <div
