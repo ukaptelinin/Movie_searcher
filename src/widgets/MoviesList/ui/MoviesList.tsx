@@ -29,36 +29,27 @@ export const MoviesList: FC = () => {
     toggleIsUrlChange,
   });
 
-  // 1. Сохраняем актуальный скролл при прокрутке
   const handleScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const currentScroll = scrollContainerRef.current.scrollTop;
-      // Записываем только если скролл больше 0, чтобы случайный сброс не перезаписал позицию
       if (currentScroll > 0) {
         sessionStorage.setItem('movies_scroll_pos', currentScroll.toString());
       }
     }
   }, [scrollContainerRef]);
 
-  // 2. СБРОС СКРОЛЛА: срабатывает строго при изменении `isNewInput`
   useLayoutEffect(() => {
     if (isNewInput) {
-      // Удаляем сохраненную позицию
       sessionStorage.removeItem('movies_scroll_pos');
 
-      // Физически прокручиваем контейнер на самый верх
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = 0;
       }
-
-      // Сбрасываем флаг нового ввода
       toggleIsNewInput();
     }
   }, [isNewInput, toggleIsNewInput, scrollContainerRef]);
 
-  // 3. ВОССТАНОВЛЕНИЕ СКРОЛЛА: срабатывает при загрузке элементов
   useLayoutEffect(() => {
-    // Если идет процесс сброса для нового ввода — пропускаем восстановление
     if (isNewInput) return;
 
     const savedScrollPos = sessionStorage.getItem('movies_scroll_pos');

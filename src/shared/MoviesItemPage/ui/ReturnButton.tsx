@@ -8,13 +8,13 @@ export const ReturnButton: FC = () => {
 
   return (
     <Button
+      className="w-7 h-7 bg-transparent"
       isIconOnly
-      color="primary"
-      variant="solid"
+      variant="light"
       onPress={() => navigate(-1)}
       aria-label="Вернуться назад"
     >
-      <ArrowLeftIcon className="w-5 h-5" />
+      <ArrowLeftIcon className="w-5 h-5 text-foreground" strokeWidth={2.5} />
     </Button>
   );
 };
