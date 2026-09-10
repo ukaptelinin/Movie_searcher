@@ -4,14 +4,18 @@ import { Button } from '@heroui/button';
 import { Form } from '@heroui/form';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useMoviesListContext } from '@/entities/movies-list';
+import { useNavigate } from 'react-router-dom';
 
 export const SearchMoviesInput: FC = () => {
-  const { getFreshMovies } = useMoviesListContext();
+  const { getFreshMovies, toggleIsNewInput } = useMoviesListContext();
+  const navigate = useNavigate();
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get('search') as string;
     await getFreshMovies(title);
+    toggleIsNewInput();
+    navigate(`/movies`);
   };
 
   return (

@@ -5,18 +5,26 @@ export interface IMoviesResponseContext {
   moviesList: MoviesResponse[];
   currentTitle: string;
   error: string | null;
+  isUrlChange: boolean;
   isPending: boolean;
+  isNewInput: boolean;
   getFreshMovies: (movieTitle: string) => Promise<void>;
   loadMoreMovies: () => Promise<void>;
+  toggleIsUrlChange: () => void;
+  toggleIsNewInput: () => void;
 }
 
 export const MoviesListContext = createContext<IMoviesResponseContext>({
   moviesList: [],
   currentTitle: '',
   error: null,
+  isUrlChange: false,
   isPending: false,
+  isNewInput: false,
   getFreshMovies: () => Promise.resolve(),
   loadMoreMovies: () => Promise.resolve(),
+  toggleIsUrlChange: () => {},
+  toggleIsNewInput: () => {},
 });
 
 export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -25,7 +33,9 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
   const [currentTitle, setCurrentTitle] = useState('');
   const [moviesList, setMoviesList] = useState<MoviesResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isUrlChange, setIsUrlChange] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
+  const [isNewInput, setisNewInput] = useState<boolean>(false);
 
   const getFreshMovies = async (movieTitle: string): Promise<void> => {
     await startTransition(async () => {
@@ -66,6 +76,8 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
       }
     });
   };
+  const toggleIsUrlChange = (): void => setIsUrlChange(!isUrlChange);
+  const toggleIsNewInput = (): void => setisNewInput(!isNewInput);
 
   return (
     <MoviesListContext.Provider
@@ -73,9 +85,13 @@ export const MoviesContextProvider: FC<{ children: ReactNode }> = ({ children })
         moviesList,
         currentTitle,
         error,
+        isUrlChange,
         isPending,
+        isNewInput,
         getFreshMovies,
         loadMoreMovies,
+        toggleIsUrlChange,
+        toggleIsNewInput,
       }}
     >
       {children}

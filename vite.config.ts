@@ -4,5 +4,17 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',
   plugins: [react(), tsconfigPaths()],
+  // проксирование
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api.kinopoisk.dev',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });
