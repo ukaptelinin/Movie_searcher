@@ -22,41 +22,29 @@ export const useMoviesListScroll = ({ moviesList, isPending, loadMoreMovies }: P
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const isPendingRef = useRef(isPending);
 
-  // Синхронизируем ref с актуальным состоянием загрузки
   useEffect(() => {
     isPendingRef.current = isPending;
   }, [isPending]);
 
-  // Создаем IntersectionObserver для отслеживания последнего элемента
   const observer = useMemo(
     () =>
       new IntersectionObserver(
         (entries) => {
           const [entry] = entries;
-          // Если последний элемент виден, данных больше нет и не идет загрузка - подгружаем новые
           if (entry.isIntersecting && moviesList.length > 0 && !isPendingRef.current) {
             loadMoreMovies();
           }
         },
-        { threshold: 0.1 }, // Срабатывает когда 10% элемента видно
+        { threshold: 0.1 },
       ),
     [moviesList.length, loadMoreMovies],
   );
-
-  // Подключаем observer к последнему элементу
   useEffect(() => {
     const currentElement = lastElementRef.current;
-
     if (currentElement) {
       observer.observe(currentElement);
     }
-
-    // Отключаем observer при размонтировании
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
+    return () => observer?.disconnect();
   }, [observer]);
 
   return {
