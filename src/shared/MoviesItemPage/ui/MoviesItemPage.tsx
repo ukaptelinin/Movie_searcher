@@ -1,10 +1,20 @@
 import { FC } from 'react';
-import { useMoviesItemPage } from '../model/useMoviesItemPage';
 import { ReturnButton } from './ReturnButton';
 import { Image } from '@heroui/image';
+import { useLoaderData } from 'react-router-dom';
+
+interface Movie {
+  id: string;
+  name: string;
+  description: string;
+  poster: {
+    url: string | null;
+    previewUrl: string | null;
+  } | null;
+}
 
 export const MoviesItemPage: FC = () => {
-  const moviesItem = useMoviesItemPage();
+  const moviesItem = useLoaderData() as Movie;
   const poster = moviesItem.poster?.previewUrl ?? '';
   return (
     <div

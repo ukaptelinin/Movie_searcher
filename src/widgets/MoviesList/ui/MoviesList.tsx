@@ -7,26 +7,16 @@ import { useMoviesListScroll } from '../model/useMoviesListScroll';
 import { useNavigate } from 'react-router-dom';
 
 export const MoviesList: FC = () => {
-  const {
-    moviesList,
-    currentTitle,
-    isUrlChange,
-    isPending,
-    isNewInput,
-    toggleIsNewInput,
-    loadMoreMovies,
-    toggleIsUrlChange,
-  } = useContext(MoviesListContext);
+  const { moviesList, currentTitle, isPending, isNewInput, toggleIsNewInput, loadMoreMovies } =
+    useContext(MoviesListContext);
   const navigate = useNavigate();
 
   const { lastElementRef, scrollContainerRef } = useMoviesListScroll({
     moviesList,
     currentTitle,
-    isUrlChange,
     isPending,
     navigate,
     loadMoreMovies,
-    toggleIsUrlChange,
   });
 
   const handleScroll = useCallback(() => {

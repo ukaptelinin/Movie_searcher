@@ -1,7 +1,8 @@
 import { FC, RefObject } from 'react';
 import { Card, CardHeader, CardBody } from '@heroui/card';
 import { Image } from '@heroui/image';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
+import { routes } from '@/app/routes/ui/router';
 
 interface MoviesCardProps {
   id: number;
@@ -11,7 +12,8 @@ interface MoviesCardProps {
 }
 
 export const MoviesCard: FC<MoviesCardProps> = ({ id, title, poster, ref }) => {
-  const url = `/movies/${id}`;
+  const url = generatePath(routes.movieDetail, { id: String(id) });
+
   return (
     <Card className="flex flex-col h-[300px] w-[200px] flex-none" key={id} ref={ref}>
       <Link to={url} style={{ textDecoration: 'none' }}>

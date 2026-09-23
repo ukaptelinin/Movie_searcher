@@ -5,11 +5,9 @@ import { NavigateFunction } from 'react-router-dom';
 interface Props {
   moviesList: MoviesResponse[];
   currentTitle: string;
-  isUrlChange: boolean;
   isPending: boolean;
   navigate: NavigateFunction;
   loadMoreMovies: () => Promise<void>;
-  toggleIsUrlChange: () => void;
 }
 
 interface Result {
