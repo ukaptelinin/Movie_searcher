@@ -1,7 +1,8 @@
 import { MainPage } from '@/pages/MainPage';
 import { MoviesListPage } from '@/pages/MoviesListPage';
-import { MoviesItemPage } from '@/shared/MoviesItemPage';
+import { MoviesItemPage } from '@/pages/MoviesItemPage';
 import { createBrowserRouter } from 'react-router-dom';
+import { ErrorPage } from '@/pages/ErrorPage';
 
 const BASE_URL = '/api/v1.4/movie/';
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -9,6 +10,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export const routes = {
   movies: '/movies',
   movieDetail: '/movies/:id',
+  errorPage: '/movies/error',
 };
 export const router = createBrowserRouter([
   {
@@ -18,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: routes.movies,
         element: <MoviesListPage />,
+      },
+      {
+        path: routes.errorPage,
+        element: <ErrorPage />,
       },
       {
         path: routes.movieDetail,

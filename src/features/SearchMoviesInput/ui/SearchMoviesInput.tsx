@@ -5,9 +5,10 @@ import { Form } from '@heroui/form';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useMoviesListContext } from '@/entities/movies-list';
 import { useNavigate } from 'react-router-dom';
+import { routes } from '@/app/routes/ui/router';
 
 export const SearchMoviesInput: FC = () => {
-  const { getFreshMovies, toggleIsNewInput } = useMoviesListContext();
+  const { getFreshMovies, toggleIsNewInput, error } = useMoviesListContext();
   const navigate = useNavigate();
   const onSearcheMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,7 +16,9 @@ export const SearchMoviesInput: FC = () => {
     const title = formData.get('search') as string;
     await getFreshMovies(title);
     toggleIsNewInput();
-    navigate(`/movies`);
+    {
+      error ? navigate(routes.errorPage) : navigate(routes.movies);
+    }
   };
 
   return (
