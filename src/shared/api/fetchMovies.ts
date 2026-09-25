@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { MoviesResponse } from './types';
 
-const BASE_URL = 'https://api.kinopoisk.dev/v1.4/movie/search';
+const BASE_URL = '/api/v1.4/movie/search';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export const fetchMovies = (

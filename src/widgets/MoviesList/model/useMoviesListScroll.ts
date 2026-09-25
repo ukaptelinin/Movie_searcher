@@ -1,10 +1,12 @@
 import { MoviesResponse } from '@/shared/api/types';
 import { RefObject, useEffect, useMemo, useRef } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 interface Props {
   moviesList: MoviesResponse[];
   currentTitle: string;
   isPending: boolean;
+  navigate: NavigateFunction;
   loadMoreMovies: () => Promise<void>;
 }
 
@@ -13,23 +15,14 @@ interface Result {
   scrollContainerRef: RefObject<HTMLDivElement | null>;
 }
 
-export const useMoviesListScroll = ({
-  moviesList,
-  currentTitle,
-  isPending,
-  loadMoreMovies,
-}: Props): Result => {
+export const useMoviesListScroll = ({ moviesList, isPending, loadMoreMovies }: Props): Result => {
   const lastElementRef = useRef<HTMLDivElement | null>(null);
-  const isPendingRef = useRef(isPending);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-
-  isPendingRef.current = isPending;
+  const isPendingRef = useRef(isPending);
 
   useEffect(() => {
-    if (currentTitle && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [currentTitle]);
+    isPendingRef.current = isPending;
+  }, [isPending]);
 
   const observer = useMemo(
     () =>
@@ -42,17 +35,14 @@ export const useMoviesListScroll = ({
         },
         { threshold: 0.1 },
       ),
-    [moviesList.length],
+    [moviesList.length, loadMoreMovies],
   );
-
   useEffect(() => {
-    if (lastElementRef.current) {
-      observer.observe(lastElementRef.current);
+    const currentElement = lastElementRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
-
-    return () => {
-      observer?.disconnect();
-    };
+    return () => observer?.disconnect();
   }, [observer]);
 
   return {
